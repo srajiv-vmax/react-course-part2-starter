@@ -1,7 +1,16 @@
-import './App.css';
+import "./App.css";
+import PostList from "./react-query/PostList";
+import TodoForm from "./react-query/TodoForm";
+import TodoList from "./react-query/TodoList";
 
 function App() {
-  return <h1>React Starter Project</h1>;
+  return (
+    <>
+      <TodoForm />
+      <PostList />
+      <TodoList />
+    </>
+  );
 }
 
 export default App;
