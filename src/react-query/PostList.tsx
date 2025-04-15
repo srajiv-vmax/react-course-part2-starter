@@ -1,47 +1,73 @@
-import { useState } from "react";
+// import { useState } from "react";
+import React from "react";
 import usePosts from "../hooks/usePosts";
 
 const PostList = () => {
   // const [userId, setUserId] = useState<number>();
   const pageSize = 10;
-  const [page, setPage] = useState(1);
+  // const [page, setPage] = useState(1);
   // const { data: posts, error, isLoading } = usePosts(userId);
-  const { data: posts, error, isLoading } = usePosts({ page, pageSize });
+  // const { data: posts, error, isLoading } = usePosts({ page, pageSize });
+  const { data, error, isFetchingNextPage, isLoading, fetchNextPage } =
+    usePosts({ pageSize });
 
   if (error) return <p>{error?.message}</p>;
   if (isLoading) return <p>Loading ...</p>;
 
+  // return (
+  //   <>
+  //     {/* <select
+  //       value={userId}
+  //       onChange={(event) => setUserId(parseInt(event.target.value))}
+  //       className="form-select md-3"
+  //     >
+  //       <option value=""></option>
+  //       <option value="1">User 1</option>
+  //       <option value="2">User 2</option>
+  //       <option value="3">User 3</option>
+  //     </select> */}
+  //     <ul className="list-group">
+  //       {posts?.map((post) => (
+  //         <li key={post.id} className="list-group-item">
+  //           {post.title}
+  //         </li>
+  //       ))}
+  //     </ul>
+  //     <button
+  //       disabled={page === 1}
+  //       onClick={() => setPage(page - 1)}
+  //       className="btn btn-primary my-3 me-1"
+  //     >
+  //       Previous
+  //     </button>
+  //     <button
+  //       onClick={() => setPage(page + 1)}
+  //       className="btn btn-primary my-3"
+  //     >
+  //       Next
+  //     </button>
+  //   </>
+  // );
+
   return (
     <>
-      {/* <select
-        value={userId}
-        onChange={(event) => setUserId(parseInt(event.target.value))}
-        className="form-select md-3"
-      >
-        <option value=""></option>
-        <option value="1">User 1</option>
-        <option value="2">User 2</option>
-        <option value="3">User 3</option>
-      </select> */}
       <ul className="list-group">
-        {posts?.map((post) => (
-          <li key={post.id} className="list-group-item">
-            {post.title}
-          </li>
+        {data?.pages.map((page) => (
+          <React.Fragment>
+            {page.map((post) => (
+              <li key={post.id} className="list-group-item">
+                {post.title}
+              </li>
+            ))}
+          </React.Fragment>
         ))}
       </ul>
       <button
-        disabled={page === 1}
-        onClick={() => setPage(page - 1)}
-        className="btn btn-primary my-3 me-1"
-      >
-        Previous
-      </button>
-      <button
-        onClick={() => setPage(page + 1)}
+        disabled={isFetchingNextPage}
+        onClick={() => fetchNextPage()}
         className="btn btn-primary my-3"
       >
-        Next
+        {isFetchingNextPage ? "Loading ..." : "Load More"}
       </button>
     </>
   );
